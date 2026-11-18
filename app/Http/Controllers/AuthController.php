@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
@@ -31,7 +32,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return $request->user()->role === 'admin'
-            ? redirect()->route('admin.dashboard')
+            ? redirect()->route(Route::has('admin.dashboard') ? 'admin.dashboard' : 'admin.products.index')
             : redirect()->intended(route('shop.index'));
     }
 
