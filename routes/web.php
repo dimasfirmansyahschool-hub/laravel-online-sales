@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductCatalogController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -18,3 +22,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin'])->group
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::resource('products', AdminProductController::class)->except('show');
 });
+
+Route::get('/', [ProductCatalogController::class, 'index'])->name('shop.index');
+Route::get('/produk/{product:slug}', [ProductCatalogController::class, 'show'])->name('shop.show');
